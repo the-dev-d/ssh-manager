@@ -47,9 +47,9 @@ public class Main {
                             thread.join();
                         }
                         System.out.println(AnsiCodes.RESET_TEXT+"\n");
-                        break;
+                        continue;
                     case 2:
-                        System.out.println(AnsiCodes.CLEAR_SCREEN);
+                        System.out.print(AnsiCodes.CLEAR_SCREEN);
                         System.out.println("==== Add Server ====");
                         System.out.print("Enter name: ");
                         String name = scanner.nextLine();
@@ -69,30 +69,30 @@ public class Main {
                             sshDatabase.addSSHDB(sshdb);
                         }else if(authType == SSHDatabase.AUTH_TYPE_KEY){
                             SSHDB sshdb = new SSHDB(null, name, ip, port, authType, username, null);
+                            System.out.println("Reached");
                             sshDatabase.addSSHDB(sshdb);
                         }
                         else{
                             System.out.println(AnsiCodes.BOLD_TEXT + " " + AnsiCodes.RED_TEXT + "***Invalid auth type***" + AnsiCodes.RESET_TEXT);
                             System.out.println();
                         }
-
-                        System.out.print(AnsiCodes.CLEAR_SCREEN);
-                        System.out.println( AnsiCodes.BOLD_TEXT + " "+  AnsiCodes.GREEN_TEXT + " ====Server added successfully==== " + AnsiCodes.RESET_TEXT);
+                        System.out.println(AnsiCodes.CLEAR_SCREEN);
+                        System.out.println( AnsiCodes.BOLD_TEXT + " "+  AnsiCodes.GREEN_TEXT + "====Server added successfully==== " + AnsiCodes.RESET_TEXT);
                         System.out.println();
                         break;
 
                     case 3:
-                        System.out.println("\n\n==== Delete Server ====");
+                        System.out.println("\n==== Delete Server ====");
                         System.out.print("Enter server id: ");
                         int id = scanner.nextInt();
                         sshDatabase.deleteSSHDB(id);
                         System.out.print(AnsiCodes.CLEAR_SCREEN);
-                        System.out.println( AnsiCodes.BOLD_TEXT + " "+  AnsiCodes.GREEN_TEXT + " ====Server deleted successfully==== " + AnsiCodes.RESET_TEXT);
+                        System.out.println( AnsiCodes.BOLD_TEXT + " "+  AnsiCodes.GREEN_TEXT + "====Server deleted successfully==== " + AnsiCodes.RESET_TEXT);
                         System.out.println();
                         break;
 
                     case 4:
-                        System.out.println("\n\n==== View Details ====");
+                        System.out.println("\n==== View Details ====");
                         System.out.print("Enter server id: ");
                         int id1 = scanner.nextInt();
                         SSHDB sshdb = sshDatabase.getSSHDB(id1);
@@ -120,11 +120,7 @@ public class Main {
                         if(choice1 == 1){
                             System.out.println("Spawning shell for " + sshdb.getName());
                             if(sshdb.getAuthType() == SSHDatabase.AUTH_TYPE_KEY) {
-                                String command[] = {"/bin/bash", "-c", "'ssh " + sshdb.getUsername()  + "@"+ sshdb.getIp() + "'"};
-                                for(String s : command) {
-                                    System.out.println(s + " ");
-                                }   
-                                ProcessBuilder processBuilder = new ProcessBuilder(command);
+                                ProcessBuilder processBuilder = new ProcessBuilder("gnome-terminal", "--", "bash", "-c", "ssh " + sshdb.getUsername() + "@"+ sshdb.getIp());
                                 processBuilder.start();
                             }
                             else {
@@ -132,11 +128,18 @@ public class Main {
                                 for(String s : command) {
                                     System.out.println(s + " ");
                                 }   
-                                ProcessBuilder processBuilder = new ProcessBuilder(command);
+                                ProcessBuilder processBuilder = new ProcessBuilder("gnome-terminal", "--", "bash", "-c", "sshpass -p " + sshdb.getPassword() + " ssh " + sshdb.getUsername()  + "@"+ sshdb.getIp());
                                 processBuilder.start();
                             }
 
                         }
+                        else if(choice1 == 2){
+                            break;
+                        }
+                        else{
+                            System.out.println("Invalid choice");
+                        }
+                        scanner.nextLine();
                         
                         System.out.println(AnsiCodes.RESET_TEXT);
                         System.out.println();
@@ -149,7 +152,6 @@ public class Main {
                         System.out.println("Invalid choice");
                 }
                 System.out.println(AnsiCodes.BOLD_TEXT + " Press enter to continue.. "+AnsiCodes.RESET_TEXT);
-                scanner.nextLine();
                 scanner.nextLine();
             }
 

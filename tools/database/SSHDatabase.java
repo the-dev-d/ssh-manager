@@ -65,8 +65,8 @@ public class SSHDatabase {
     public void addSSHDB(SSHDB sshdb) {
         try {
             Statement statement = this.conn.createStatement();
-            String query = "INSERT INTO ssh (name, ip, port, username, auth_type, password) VALUES ('" + sshdb.getName() + "', '" + sshdb.getIp() + "', " + sshdb.getPort() + ", " + sshdb.getUsername() + ", " + sshdb.getAuthType() + ", '" + sshdb.getPassword() + "')";
-            System.out.println(query);
+            String query = "INSERT INTO ssh (name, ip, port, username, auth_type, password) VALUES ('" + sshdb.getName() + "', '" + sshdb.getIp() + "', " + sshdb.getPort() + ", '" + sshdb.getUsername() + "', " + sshdb.getAuthType() + ", '" + sshdb.getPassword() + "')";
+            // System.out.println(query);
             statement.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();

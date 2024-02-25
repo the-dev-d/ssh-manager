@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import tools.database.model.Model;
 import tools.database.model.SSHDB;
 
 public class SSHDatabase {
@@ -15,15 +16,21 @@ public class SSHDatabase {
     public static int AUTH_TYPE_PASSWORD = 1;
     public static int AUTH_TYPE_KEY = 2;
     public static int AUTH_TYPE_PEM = 3;
-
+    
     private Connection conn;
 
     public SSHDatabase() throws ClassNotFoundException, SQLException{
         Class.forName("com.mysql.jdbc.Driver");
         this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sshdb", "root", "");
         Statement statement = this.conn.createStatement();
-        String query = "CREATE TABLE IF NOT EXISTS ssh (id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(100), ip VARCHAR(100), port INT, auth_type INT, username VARCHAR(100), password VARCHAR(100))";
-        statement.executeUpdate(query);
+        
+        List<Model> models = new ArrayList<>();
+        models.add(new SSHDB());
+
+        for(Model model : models){
+            String query = model.getCreateQuery();
+            statement.executeUpdate(query);
+        }
     }
 
     public SSHDB getSSHDB(Integer id) throws SQLException{

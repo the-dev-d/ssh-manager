@@ -124,10 +124,6 @@ public class Main {
                                 processBuilder.start();
                             }
                             else {
-                                String command[] = {"/bin/bash", "-c", "'sshpass -p " + sshdb.getPassword() + " ssh " + sshdb.getUsername()  + "@"+ sshdb.getIp() + "'"};
-                                for(String s : command) {
-                                    System.out.println(s + " ");
-                                }   
                                 ProcessBuilder processBuilder = new ProcessBuilder("gnome-terminal", "--", "bash", "-c", "sshpass -p " + sshdb.getPassword() + " ssh " + sshdb.getUsername()  + "@"+ sshdb.getIp());
                                 processBuilder.start();
                             }

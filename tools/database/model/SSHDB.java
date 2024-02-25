@@ -1,6 +1,6 @@
 package tools.database.model;
 
-public class SSHDB {
+public class SSHDB extends Model{
 
     private Integer id;
 
@@ -86,5 +86,9 @@ public class SSHDB {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getCreateQuery() {
+        return "CREATE TABLE IF NOT EXISTS ssh (id INTEGER PRIMARY KEY AUTO_INCREMENT, name VARCHAR(30), ip VARCHAR(20), port INTEGER, auth_type TINYINT, username VARCHAR(20), password VARCHAR(30))";
     }
 }
